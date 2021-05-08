@@ -2,32 +2,35 @@ const express = require('express');
 const app = express();
 
 const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded( { extended: true }));
-app.use(bodyParser.json());
-
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+
+
+app.use(bodyParser.urlencoded( { extended: false }));
+app.use(bodyParser.json());
+
+
+app.get('/perguntar', (req, res) => {
+  res.render('perguntar');
+});
 
 app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.get('/novo', (req, res) => {
-  res.render('new')
+
+
+app.post('/salvarpergunta', (req, res) => {
+  let topic = {
+    title: req.params.titulo,
+    message: req.params.message,
+  };
+  console.log(topic)
+  res.send(`Formulário enviado para o servidor', ${topic}`);
 });
 
-app.get('/listar', (req, res) => {
-  res.render('list')
-});
 
-app.post('/salvar', (req, res) => {
-    let title = req.body.titulo;
-    let description = req.body.descricao;
-    console.log(`Dados do formulario salvo: Titulo: ${title}  Descricao: ${description}`);
-
-    res.send(`Dados do formulario salvo: Titulo: ${title}  Descricao: ${description}`)
-});
 
 
   // iniciando nosso servidor
